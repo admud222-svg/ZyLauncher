@@ -128,7 +128,7 @@ import okhttp3.OkHttpClient;
         setupNavBar();
         setupManagersAndHandlers();
         if (!isInstanceShortcutIntent()) {
-            new GithubReleaseUpdater(this, "LiteLDev", "LeviLauncher-Android", permissionResultLauncher).checkUpdateOnLaunch();
+            new GithubReleaseUpdater(this, "admud222-svg", "ZyLauncher", permissionResultLauncher) /* Zy Launcher releases */.checkUpdateOnLaunch();
         }
         showEulaIfNeeded();
         setupOnBackPressedCallback();

@@ -71,7 +71,7 @@ android {
         minSdkVersion 28
         targetSdkVersion 35
         versionCode getVersionCodeByTimestamp()
-        versionName "1.0.0-zy" // Zy Launcher version (upstream: git tag)
+        versionName "1.0.1" // Zy Launcher version; GitHub release tags are v<versionName>
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "CURSEFORGE_API_KEY", groovy.json.JsonOutput.toJson(curseForgeApiKey)
         buildConfigField 'long', 'DISCORD_APPLICATION_ID', "${discordApplicationId}L"

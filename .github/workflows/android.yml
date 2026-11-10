@@ -1,11 +1,11 @@
 # Zy Launcher build: compiles the release APK and signs it with the Zy Launcher key (repository secrets
-# ZY_KEYSTORE_B64 / ZY_KEYSTORE_PASS). Pushing a tag v* also publishes a GitHub Release.
+# ZY_KEYSTORE_B64 / ZY_KEYSTORE_PASS). Releases are published from a tested build's artifact with
+# `gh release create v<versionName> ZyLauncher.apk` (the in-app updater reads the latest release).
 name: Build Zy Launcher
 
 on:
   push:
     branches: [main]
-    tags: ["v*"]
   workflow_dispatch:
 
 concurrency:
@@ -75,10 +75,3 @@ jobs:
         with:
           name: ZyLauncher-apk
           path: ZyLauncher.apk
-
-      - name: Publish release
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: ZyLauncher.apk
-          generate_release_notes: true

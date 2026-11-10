@@ -12,3 +12,4 @@ endif()
 add_subdirectory(preloader)
 add_subdirectory(libHttpClient/Build/libHttpClient.Android)
 add_subdirectory(worldtools)
+add_subdirectory(zy_discord_stub)  # Zy Launcher

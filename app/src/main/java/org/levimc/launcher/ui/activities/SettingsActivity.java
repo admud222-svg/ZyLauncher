@@ -1499,7 +1499,7 @@ public class SettingsActivity extends BaseActivity {
             updateButtonTapCount = 0;
             triggerEasterEgg();
         } else {
-            new GithubReleaseUpdater(this, "LiteLDev", "LeviLauncher-Android", permissionResultLauncher).checkUpdate();
+            new GithubReleaseUpdater(this, "admud222-svg", "ZyLauncher", permissionResultLauncher) /* Zy Launcher releases */.checkUpdate();
         }
     }
 
