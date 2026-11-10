@@ -48,6 +48,14 @@ class ZyBoostActivity : AppCompatActivity() {
         list.addView(text("Zy Boost", 26f, textMain, bold = true))
         list.addView(text("Berlaku saat game dibuka berikutnya.", 14f, textDim).also { it.setPadding(0, dp(2), 0, dp(14)) })
 
+        // Loading / switching apps
+        list.addView(section("Jaga Game Tetap Hidup",
+            "Muncul notifikasi kecil saat main. Android jadi gak gampang matiin game waktu kamu pindah app, jadi balik ke game langsung lanjut tanpa loading ulang.",
+            switch(ZyBoost.KEY_KEEP_ALIVE)))
+        list.addView(section("Buka Launcher Cepat",
+            "Lewati animasi splash (sekitar 3 detik) tiap launcher dibuka.",
+            switch(ZyBoost.KEY_FAST_START)))
+
         // Resolution
         val scaleLabel = text("", 15f, accent, bold = true)
         fun showScale(p: Int) {
@@ -168,7 +176,7 @@ class ZyBoostActivity : AppCompatActivity() {
         setTextColor(textMain)
         gravity = Gravity.CENTER_VERTICAL
         isEnabled = enabled
-        isChecked = enabled && ZyBoost.prefs(this@ZyBoostActivity).getBoolean(key, false)
+        isChecked = enabled && ZyBoost.isOn(this@ZyBoostActivity, key)
         setOnCheckedChangeListener { _, on -> ZyBoost.prefs(this@ZyBoostActivity).edit().putBoolean(key, on).apply() }
     }
 

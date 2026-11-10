@@ -37,6 +37,8 @@ object ZyBoost {
     const val KEY_SUSTAINED = "sustained"
     const val KEY_THREADS = "thread_boost"
     const val KEY_CLEAN = "clean_ram"
+    const val KEY_KEEP_ALIVE = "keep_alive"
+    const val KEY_FAST_START = "fast_start"
 
     const val SCALE_MIN = 50
     const val SCALE_MAX = 100
@@ -49,6 +51,14 @@ object ZyBoost {
 
     private fun flag(context: Context, key: String, default: Boolean = false) =
         prefs(context).getBoolean(key, default)
+
+    /** Options that are on unless the player turns them off. */
+    fun defaultOn(key: String): Boolean = key == KEY_KEEP_ALIVE || key == KEY_FAST_START
+
+    fun isOn(context: Context, key: String): Boolean = flag(context, key, defaultOn(key))
+
+    /** Skip the decorative launcher splash animation (it does no work, it only waits ~3 s). */
+    fun fastStart(context: Context): Boolean = isOn(context, KEY_FAST_START)
 
     // ---- runtime state for the running game ---------------------------------------------------
 
@@ -64,6 +74,7 @@ object ZyBoost {
         safe("scale") { if (surfaceView != null) attachScale(surfaceView, scalePercent(ctx)) }
         safe("threads") { if (flag(ctx, KEY_THREADS)) startThreadBoost() }
         safe("clean") { if (flag(ctx, KEY_CLEAN)) Thread({ cleanBackground(ctx) }, "ZyClean").start() }
+        safe("keepAlive") { if (isOn(ctx, KEY_KEEP_ALIVE)) ZyKeepAliveService.start(ctx) }
     }
 
     // ---- resolution scale -----------------------------------------------------------------------

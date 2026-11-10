@@ -64,6 +64,12 @@ public class SplashActivity extends BaseActivity {
 
         warmUpStorageAndVersions();
 
+        // Zy Launcher: the splash only animates (no work waits on it), so open the launcher at once.
+        if (org.levimc.launcher.zy.ZyBoost.INSTANCE.fastStart(this)) {
+            binding.getRoot().post(this::openMainImmediately);
+            return;
+        }
+
         binding.getRoot().post(this::startSplashSequence);
     }
 
@@ -282,6 +288,14 @@ public class SplashActivity extends BaseActivity {
             }
         });
         progressAnimator.start();
+    }
+
+    private void openMainImmediately() {
+        if (navigated) return;
+        navigated = true;
+        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        finish();
+        overridePendingTransition(0, 0);
     }
 
     private void navigateToMain() {

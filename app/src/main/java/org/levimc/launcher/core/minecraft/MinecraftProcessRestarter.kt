@@ -38,8 +38,9 @@ const val EXTRA_CLOSE_RESTART_ACTIVITY_ON_FIRST_DRAW =
 const val ACTION_MAIN_ACTIVITY_FIRST_DRAWN =
     "org.levimc.launcher.action.MAIN_ACTIVITY_FIRST_DRAWN"
 private const val LEGACY_LAUNCHER_RESTART_REQUEST_CODE = 0x1E72
-private const val KILL_OLD_PROCESS_DELAY_MS = 300L
-private const val RELAUNCH_AFTER_KILL_DELAY_MS = 700L
+// Zy Launcher: shorter hand-over after leaving the game (upstream: 300 ms + 700 ms).
+private const val KILL_OLD_PROCESS_DELAY_MS = 150L
+private const val RELAUNCH_AFTER_KILL_DELAY_MS = 350L
 
 object MinecraftProcessRestarter {
     fun restartLauncherAfterMinecraftExit(context: Context) {
