@@ -83,10 +83,10 @@ object ZyBoost {
                 Log.i(TAG, "render ${fw}x$fh of ${w}x$h ($percent%)")
             }
         }
-        view.addOnLayoutChangeListener { _, l, t, r, b, ol, ot, or, ob ->
-            if (r - l != or - ol || b - t != ob - ot) apply()
+        view.addOnLayoutChangeListener { _, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            if (right - left != oldRight - oldLeft || bottom - top != oldBottom - oldTop) apply()
         }
-        view.post(apply)
+        view.post { apply() }
     }
 
     /** True when touch coordinates must be converted to the smaller render surface. */
@@ -128,9 +128,12 @@ object ZyBoost {
             override fun surfaceCreated(holder: SurfaceHolder) = hint(holder)
             override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) = hint(holder)
             override fun surfaceDestroyed(holder: SurfaceHolder) {}
-            private fun hint(holder: SurfaceHolder) = safe("frameRate") {
-                if (Build.VERSION.SDK_INT >= 30) {
+            private fun hint(holder: SurfaceHolder) {
+                if (Build.VERSION.SDK_INT < 30) return
+                try {
                     holder.surface.setFrameRate(240f, Surface.FRAME_RATE_COMPATIBILITY_DEFAULT)
+                } catch (t: Throwable) {
+                    Log.w(TAG, "frame rate hint failed: $t")
                 }
             }
         }
