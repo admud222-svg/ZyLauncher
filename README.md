@@ -1,3 +1,21 @@
+# Zy Launcher
+
+Zy Launcher is a modified version of **[LeviLauncher for Android](https://github.com/LiteLDev/LeviLauncher-Android)**
+by the LeviMC team, licensed under the Apache License 2.0 (see `LICENSE`). All credit for the launcher core goes to
+LeviMC; this fork is maintained by AdmudCraft for personal use.
+
+You still need a legitimately purchased Minecraft: Bedrock Edition from Google Play; the ownership check is unchanged.
+
+## Changes from upstream
+- App id `org.admud.zylauncher` and name "Zy Launcher" (installs next to LeviLauncher; data in `Android/media/org.admud.zylauncher`).
+- Removed the Discord Rich Presence integration (needs a private SDK) and the launcher's Firebase Analytics,
+  Crashlytics and news push (crash logs stay on the device). Minecraft's own Firebase setup is untouched.
+- CI (`.github/workflows/android.yml`) builds and signs the APK with the Zy Launcher key; tags `v*` publish a release.
+
+---
+
+## Upstream README
+
 <div align="center">
 
 ![LeviLauncher Logo](https://avatars.githubusercontent.com/u/78095377?s=200&v=4)

@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.google.services)
-    alias(libs.plugins.firebase.crashlytics)
 }
 
 def localProperties = new Properties()
@@ -69,11 +67,11 @@ android {
     namespace 'org.levimc.launcher'
     compileSdkVersion 36
     defaultConfig {
-        applicationId "org.levimc.launcher"
+        applicationId "org.admud.zylauncher"
         minSdkVersion 28
         targetSdkVersion 35
         versionCode getVersionCodeByTimestamp()
-        versionName getGitTag()
+        versionName "1.0.0-zy" // Zy Launcher version (upstream: git tag)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "CURSEFORGE_API_KEY", groovy.json.JsonOutput.toJson(curseForgeApiKey)
         buildConfigField 'long', 'DISCORD_APPLICATION_ID', "${discordApplicationId}L"
@@ -109,10 +107,6 @@ android {
             minifyEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            firebaseCrashlytics {
-                mappingFileUploadEnabled true
-                nativeSymbolUploadEnabled true
-            }
             ndk {
                 debugSymbolLevel 'FULL'
             }
@@ -123,10 +117,6 @@ android {
             minifyEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            firebaseCrashlytics {
-                mappingFileUploadEnabled true
-                nativeSymbolUploadEnabled true
-            }
             ndk {
                 debugSymbolLevel 'FULL'
             }
@@ -142,11 +132,7 @@ android {
             minifyEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            firebaseCrashlytics {
-                mappingFileUploadEnabled true
-                nativeSymbolUploadEnabled true
-            }
-            resValue "string", "app_name", "LeviLauncher Beta"
+            resValue "string", "app_name", "Zy Launcher Beta"
             buildConfigField "boolean", "IS_BETA", "true"
             matchingFallbacks = ["release"]
             ndk {
@@ -189,7 +175,6 @@ android {
 }
 
 dependencies {
-    implementation files('libs/discord_partner_sdk.aar')
     implementation project(':minecraft')
     implementation project(':pojav_controls')
     implementation libs.commonmark
@@ -200,9 +185,6 @@ dependencies {
     implementation libs.commons.httpclient
     implementation libs.commons.gson
     implementation platform(libs.firebase.bom)
-    implementation libs.firebase.analytics
-    implementation libs.firebase.crashlytics
-    implementation libs.firebase.crashlytics.ndk
     implementation libs.firebase.messaging
     implementation libs.core.splashscreen
     implementation libs.appcompat

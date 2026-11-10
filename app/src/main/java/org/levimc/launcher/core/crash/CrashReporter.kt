@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Process
 import android.os.SystemClock
-import com.google.firebase.FirebaseApp
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.levimc.launcher.BuildConfig
 import org.levimc.launcher.settings.FeatureSettings
 import org.levimc.launcher.ui.activities.CrashActivity
@@ -58,11 +56,7 @@ object CrashReporter {
 
     @JvmStatic
     fun sendUnsentReports() {
-        if (!isCrashlyticsEnabled()) return
-        try {
-            FirebaseCrashlytics.getInstance().sendUnsentReports()
-        } catch (_: Throwable) {
-        }
+        // Zy Launcher: crash reports stay on the device (no Firebase Crashlytics upload).
     }
 
     @JvmStatic
@@ -113,65 +107,19 @@ object CrashReporter {
         emergency: String?,
         summary: String
     ) {
-        if (!isCrashlyticsEnabled()) return
-        try {
-            FirebaseCrashlytics.getInstance().apply {
-                setCustomKey("last_crash_type", crashType)
-                setCustomKey("last_crash_summary", trimCrashlyticsValue(summary))
-                setCustomKey("version_name", BuildConfig.VERSION_NAME)
-                setCustomKey("version_code", BuildConfig.VERSION_CODE)
-                setCustomKey("is_beta", BuildConfig.IS_BETA)
-                setCustomKey("build_type", BuildConfig.BUILD_TYPE)
-                if (!logPath.isNullOrBlank()) {
-                    setCustomKey("local_crash_log", trimCrashlyticsValue(logPath))
-                    log("xCrash local log: $logPath")
-                }
-                if (!emergency.isNullOrBlank()) {
-                    log("xCrash emergency: ${trimCrashlyticsValue(emergency)}")
-                }
-                recordException(XCrashCapturedException(crashType, summary))
-            }
-        } catch (_: Throwable) {
-        }
+        // Zy Launcher: crash reports stay on the device (no Firebase Crashlytics upload).
     }
 
     private fun configureCrashlytics(context: Context) {
-        if (!ensureFirebaseInitialized(context)) return
-        try {
-            FirebaseCrashlytics.getInstance().apply {
-                val uploadEnabled = isCrashUploadEnabled()
-                setCrashlyticsCollectionEnabled(uploadEnabled)
-                if (!uploadEnabled) {
-                    deleteUnsentReports()
-                    return
-                }
-                setCustomKey("version_name", BuildConfig.VERSION_NAME)
-                setCustomKey("version_code", BuildConfig.VERSION_CODE)
-                setCustomKey("is_beta", BuildConfig.IS_BETA)
-                setCustomKey("build_type", BuildConfig.BUILD_TYPE)
-            }
-        } catch (_: Throwable) {
-        }
+        // Zy Launcher: crash reports stay on the device (no Firebase Crashlytics upload).
     }
 
     private fun recordHandlerError(error: Throwable) {
-        if (!isCrashlyticsEnabled()) return
-        try {
-            FirebaseCrashlytics.getInstance().recordException(error)
-        } catch (_: Throwable) {
-        }
+        // Zy Launcher: crash reports stay on the device (no Firebase Crashlytics upload).
     }
 
     private fun ensureFirebaseInitialized(context: Context): Boolean {
-        if (!isCrashlyticsAvailable()) return false
-        return try {
-            if (FirebaseApp.getApps(context).isEmpty()) {
-                FirebaseApp.initializeApp(context)
-            }
-            FirebaseApp.getApps(context).isNotEmpty()
-        } catch (_: Throwable) {
-            false
-        }
+        return false
     }
 
     private fun isCrashlyticsEnabled(): Boolean {

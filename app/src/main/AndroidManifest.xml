@@ -39,10 +39,6 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"
         tools:ignore="RequestInstallPackagesPolicy" />
     <queries>
-        <package android:name="com.discord" />
-        <intent>
-            <action android:name="com.discord.socialsdk.rpc.IDiscordRpcService" />
-        </intent>
         <package android:name="com.mojang.minecraftpe" />
         <intent>
             <action android:name="android.intent.action.VIEW" />
@@ -61,9 +57,6 @@
         android:theme="@style/Base.Theme.FullScreen"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true">
-
-        <activity android:name="com.discord.socialsdk.AuthenticationActivity" tools:node="remove" />
-        <service android:name="com.discord.socialsdk.ForegroundService" tools:node="remove" />
 
         <meta-data
             android:name="com.google.android.gms.games.APP_ID"
@@ -96,14 +89,6 @@
             android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"
             tools:ignore="DiscouragedApi" />
 
-
-        <service
-            android:name="org.levimc.launcher.core.news.LauncherNewsMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
 
         <activity
             android:name="org.levimc.launcher.ui.activities.NewsActivity"
