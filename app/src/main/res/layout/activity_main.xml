@@ -169,6 +169,18 @@
                     app:icon="@drawable/ic_nav_settings"
                     app:iconSize="22dp" />
 
+                <!-- Zy Launcher: Zy Boost (performance options). -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/home_zy_boost_button"
+                    style="@style/Widget.Levi.Button.Icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="Zy Boost"
+                    android:tooltipText="Zy Boost"
+                    app:icon="@drawable/ic_zy_boost"
+                    app:iconSize="22dp" />
+
                 <!-- Split launch button: the main part launches, the chevron opens more launch options. -->
                 <LinearLayout
                     android:id="@+id/home_launch_group"

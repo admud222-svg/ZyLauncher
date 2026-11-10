@@ -692,6 +692,9 @@ import okhttp3.OkHttpClient;
         binding.selectVersionButton.setOnClickListener(v -> showVersionSelectDialog());
         DynamicAnim.applyPressScale(binding.selectVersionButton);
         binding.homeInstanceSettingsButton.setOnClickListener(v -> openInstanceSettings());
+        // Zy Launcher: Zy Boost settings.
+        binding.homeZyBoostButton.setOnClickListener(v ->
+                startActivity(new Intent(this, org.levimc.launcher.zy.ZyBoostActivity.class)));
         DynamicAnim.applyPressScale(binding.homeInstanceSettingsButton);
         styleHomeAccents();
 

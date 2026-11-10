@@ -26,6 +26,7 @@ import org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager
 import org.levimc.launcher.preloader.PreloaderInput
 import org.levimc.launcher.settings.FeatureSettings
 import org.levimc.launcher.util.LauncherBackgroundController
+import org.levimc.launcher.zy.ZyBoost
 import org.levimc.pojavcontrols.PojavControls
 import org.levimc.pojavcontrols.PojavControlsHost
 import java.io.File
@@ -135,6 +136,11 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
             return
         }
         trace.mark("Mojang MainActivity super.onCreate finished")
+
+        // Zy Launcher: performance options (resolution scale, refresh rate, sustained mode, threads, RAM).
+        val gameSurface: android.view.SurfaceView? = mSurfaceView
+        ZyBoost.onGameCreated(this, gameSurface)
+        ZyBoost.refreshCallback(this)?.let { callback -> gameSurface?.holder?.addCallback(callback) }
 
         val launchVertically = intent.getBooleanExtra("LAUNCH_VERTICALLY", false)
         if (launchVertically) {
@@ -392,7 +398,7 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
             var anyConsumed = false
             for (index in 0 until event.pointerCount) {
                 if (PreloaderInput.onTouch(action, event.getPointerId(index),
-                        event.getX(index), event.getY(index))) {
+                        ZyBoost.scaleX(event.getX(index)), ZyBoost.scaleY(event.getY(index)))) {
                     anyConsumed = true
                 }
             }
@@ -400,7 +406,7 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
         } else {
             val index = event.actionIndex
             PreloaderInput.onTouch(action, event.getPointerId(index),
-                event.getX(index), event.getY(index))
+                ZyBoost.scaleX(event.getX(index)), ZyBoost.scaleY(event.getY(index)))
         }
         if (consumed) {
             return true
@@ -409,6 +415,17 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
         overlayManager?.handleTouchEvent(event)
 
         return super.dispatchTouchEvent(event)
+    }
+
+    // Zy Launcher: when the game renders at a reduced resolution, convert touch/mouse coordinates to the
+    // smaller surface before GameActivity hands them to the native side.
+    override fun processMotionEvent(event: MotionEvent): Boolean {
+        val scaled = ZyBoost.scaledCopy(event) ?: return super.processMotionEvent(event)
+        return try {
+            super.processMotionEvent(scaled)
+        } finally {
+            scaled.recycle()
+        }
     }
 
     fun dispatchGenericMotionEventToGame(event: MotionEvent): Boolean {
@@ -459,7 +476,7 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
     }
 
     override fun pojavSendPointer(x: Float, y: Float) {
-        PojavControlsMod.nativeSendPointer(x, y)
+        PojavControlsMod.nativeSendPointer(ZyBoost.scaleX(x), ZyBoost.scaleY(y))
     }
 
     override fun pojavSendTouch(event: MotionEvent): Boolean {
